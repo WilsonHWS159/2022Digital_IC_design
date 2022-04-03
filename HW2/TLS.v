@@ -13,18 +13,14 @@ output reg      Rout;
 
 	reg [3:0] G_time, Y_time, R_time, Time, counter;
 	reg [1:0] state;
+	reg awake;
 	
 	always @(posedge Set) begin
 		G_time = Gin;
 		Y_time = Yin;
 		R_time = Rin;
 	end
-	/*
-	always @(posedge Jump) begin
-		Time = R_time;
-		state = 2'b10;
-	end
-	*/
+	
 	always @(posedge clk) begin
 		if (Stop) 
 			counter <= counter;
@@ -32,8 +28,13 @@ output reg      Rout;
 			counter <= Time - 1;
 		else if (counter)
 			counter <= counter - 1;
-		else
+		else begin
 			counter <= Time - 1;
+			if (Time == 4'h1)
+				awake <= 1'b1;
+			else
+				awake <= 1'b0;
+		end
 	end
 	
 	always @(posedge clk) begin
@@ -66,7 +67,7 @@ output reg      Rout;
 		end else if (Jump) begin
 			state = 2'b10;
 			Time = R_time;
-		end else if (!counter) begin
+		end else if (!counter | awake) begin
 			case (state)
 				default: state = 2'b00;
 				2'b00: begin

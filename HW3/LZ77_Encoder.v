@@ -166,6 +166,35 @@ always @(posedge clk) begin
 			end
 			4'h4: begin
 				if (buff[7] == buff[11]) begin
+					if (buff[6] == buff[10]) begin
+						if (buff[5] == buff[9]) begin
+							if (buff[4] == buff[8]) begin
+								valid <= 1'b1;
+								offset <= 4'h3;
+								match_len <= 3'h4;
+								char_nxt <= buff[3];
+								hold <= 4'h3;
+							end else begin
+								valid <= 1'b1;
+								offset <= 4'h3;
+								match_len <= 3'h3;
+								char_nxt <= buff[4];
+								hold <= 4'h2;
+							end
+						end else begin
+							valid <= 1'b1;
+							offset <= 4'h3;
+							match_len <= 3'h2;
+							char_nxt <= buff[5];
+							hold <= 4'h1;
+						end
+					end else begin
+						valid <= 1'b1;
+						offset <= 4'h3;
+						match_len <= 3'h1;
+						char_nxt <= buff[6];
+						hold <= 4'h0;
+					end
 				end else if (buff[7] == buff[10]) begin
 					if (buff[6] == buff[9]) begin
 						if (buff[5] == buff[8]) begin
@@ -218,7 +247,73 @@ always @(posedge clk) begin
 			end
 			4'h5: begin
 				if (buff[7] == buff[12]) begin
+					if (buff[6] == buff[11]) begin
+						if (buff[5] == buff[10]) begin
+							if (buff[4] == buff[9]) begin
+								if (buff[3] == buff[8]) begin
+									valid <= 1'b1;
+									offset <= 4'h4;
+									match_len <= 3'h5;
+									char_nxt <= buff[2];
+									hold <= 4'h4;
+								end else begin
+									valid <= 1'b1;
+									offset <= 4'h4;
+									match_len <= 3'h4;
+									char_nxt <= buff[3];
+									hold <= 4'h3;
+								end
+							end else begin
+								valid <= 1'b1;
+								offset <= 4'h4;
+								match_len <= 3'h3;
+								char_nxt <= buff[4];
+								hold <= 4'h2;
+							end
+						end else begin
+							valid <= 1'b1;
+							offset <= 4'h4;
+							match_len <= 3'h2;
+							char_nxt <= buff[5];
+							hold <= 4'h1;
+						end
+					end else begin
+						valid <= 1'b1;
+						offset <= 4'h4;
+						match_len <= 3'h1;
+						char_nxt <= buff[6];
+						hold <= 4'h0;
+					end
 				end else if (buff[7] == buff[11]) begin
+					if (buff[6] == buff[10]) begin
+						if (buff[5] == buff[9]) begin
+							if (buff[4] == buff[8]) begin
+								valid <= 1'b1;
+								offset <= 4'h3;
+								match_len <= 3'h4;
+								char_nxt <= buff[3];
+								hold <= 4'h3;
+							end else begin
+								valid <= 1'b1;
+								offset <= 4'h3;
+								match_len <= 3'h3;
+								char_nxt <= buff[4];
+								hold <= 4'h2;
+							end
+						end else begin
+							valid <= 1'b1;
+							offset <= 4'h3;
+							match_len <= 3'h2;
+							char_nxt <= buff[5];
+							hold <= 4'h1;
+						end
+					end else begin
+						valid <= 1'b1;
+						offset <= 4'h3;
+						match_len <= 3'h1;
+						char_nxt <= buff[6];
+						hold <= 4'h0;
+					end
 				end else if (buff[7] == buff[10]) begin
 					if (buff[6] == buff[9]) begin
 						if (buff[5] == buff[8]) begin
@@ -271,8 +366,99 @@ always @(posedge clk) begin
 			end
 			4'h6: begin
 				if (buff[7] == buff[13]) begin
+					if (buff[6] == buff[12]) begin
+						if (buff[5] == buff[11]) begin
+							if (buff[4] == buff[10]) begin
+								if (buff[3] == buff[9]) begin
+									if (buff[2] == buff[8]) begin
+										valid <= 1'b1;
+										offset <= 4'h5;
+										match_len <= 3'h6;
+										char_nxt <= buff[1];
+										hold <= 4'h5;
+									end else begin
+										valid <= 1'b1;
+										offset <= 4'h5;
+										match_len <= 3'h6;
+										char_nxt <= buff[1];
+										hold <= 4'h5;
+									end
+								end else begin
+								end
+							end else begin
+							end
+						end else begin
+						end
+					end else begin
+					end
 				end else if (buff[7] == buff[12]) begin
+					if (buff[6] == buff[11]) begin
+						if (buff[5] == buff[10]) begin
+							if (buff[4] == buff[9]) begin
+								if (buff[3] == buff[8]) begin
+									valid <= 1'b1;
+									offset <= 4'h4;
+									match_len <= 3'h5;
+									char_nxt <= buff[2];
+									hold <= 4'h4;
+								end else begin
+									valid <= 1'b1;
+									offset <= 4'h4;
+									match_len <= 3'h4;
+									char_nxt <= buff[3];
+									hold <= 4'h3;
+								end
+							end else begin
+								valid <= 1'b1;
+								offset <= 4'h4;
+								match_len <= 3'h3;
+								char_nxt <= buff[4];
+								hold <= 4'h2;
+							end
+						end else begin
+							valid <= 1'b1;
+							offset <= 4'h4;
+							match_len <= 3'h2;
+							char_nxt <= buff[5];
+							hold <= 4'h1;
+						end
+					end else begin
+						valid <= 1'b1;
+						offset <= 4'h4;
+						match_len <= 3'h1;
+						char_nxt <= buff[6];
+						hold <= 4'h0;
+					end
 				end else if (buff[7] == buff[11]) begin
+					if (buff[6] == buff[10]) begin
+						if (buff[5] == buff[9]) begin
+							if (buff[4] == buff[8]) begin
+								valid <= 1'b1;
+								offset <= 4'h3;
+								match_len <= 3'h4;
+								char_nxt <= buff[3];
+								hold <= 4'h3;
+							end else begin
+								valid <= 1'b1;
+								offset <= 4'h3;
+								match_len <= 3'h3;
+								char_nxt <= buff[4];
+								hold <= 4'h2;
+							end
+						end else begin
+							valid <= 1'b1;
+							offset <= 4'h3;
+							match_len <= 3'h2;
+							char_nxt <= buff[5];
+							hold <= 4'h1;
+						end
+					end else begin
+						valid <= 1'b1;
+						offset <= 4'h3;
+						match_len <= 3'h1;
+						char_nxt <= buff[6];
+						hold <= 4'h0;
+					end
 				end else if (buff[7] == buff[10]) begin
 					if (buff[6] == buff[9]) begin
 						if (buff[5] == buff[8]) begin
@@ -327,7 +513,73 @@ always @(posedge clk) begin
 				if (buff[7] == buff[14]) begin
 				end else if (buff[7] == buff[13]) begin
 				end else if (buff[7] == buff[12]) begin
+					if (buff[6] == buff[11]) begin
+						if (buff[5] == buff[10]) begin
+							if (buff[4] == buff[9]) begin
+								if (buff[3] == buff[8]) begin
+									valid <= 1'b1;
+									offset <= 4'h4;
+									match_len <= 3'h5;
+									char_nxt <= buff[2];
+									hold <= 4'h4;
+								end else begin
+									valid <= 1'b1;
+									offset <= 4'h4;
+									match_len <= 3'h4;
+									char_nxt <= buff[3];
+									hold <= 4'h3;
+								end
+							end else begin
+								valid <= 1'b1;
+								offset <= 4'h4;
+								match_len <= 3'h3;
+								char_nxt <= buff[4];
+								hold <= 4'h2;
+							end
+						end else begin
+							valid <= 1'b1;
+							offset <= 4'h4;
+							match_len <= 3'h2;
+							char_nxt <= buff[5];
+							hold <= 4'h1;
+						end
+					end else begin
+						valid <= 1'b1;
+						offset <= 4'h4;
+						match_len <= 3'h1;
+						char_nxt <= buff[6];
+						hold <= 4'h0;
+					end
 				end else if (buff[7] == buff[11]) begin
+					if (buff[6] == buff[10]) begin
+						if (buff[5] == buff[9]) begin
+							if (buff[4] == buff[8]) begin
+								valid <= 1'b1;
+								offset <= 4'h3;
+								match_len <= 3'h4;
+								char_nxt <= buff[3];
+								hold <= 4'h3;
+							end else begin
+								valid <= 1'b1;
+								offset <= 4'h3;
+								match_len <= 3'h3;
+								char_nxt <= buff[4];
+								hold <= 4'h2;
+							end
+						end else begin
+							valid <= 1'b1;
+							offset <= 4'h3;
+							match_len <= 3'h2;
+							char_nxt <= buff[5];
+							hold <= 4'h1;
+						end
+					end else begin
+						valid <= 1'b1;
+						offset <= 4'h3;
+						match_len <= 3'h1;
+						char_nxt <= buff[6];
+						hold <= 4'h0;
+					end
 				end else if (buff[7] == buff[10]) begin
 					if (buff[6] == buff[9]) begin
 						if (buff[5] == buff[8]) begin
@@ -383,7 +635,73 @@ always @(posedge clk) begin
 				end else if (buff[7] == buff[14]) begin
 				end else if (buff[7] == buff[13]) begin
 				end else if (buff[7] == buff[12]) begin
+					if (buff[6] == buff[11]) begin
+						if (buff[5] == buff[10]) begin
+							if (buff[4] == buff[9]) begin
+								if (buff[3] == buff[8]) begin
+									valid <= 1'b1;
+									offset <= 4'h4;
+									match_len <= 3'h5;
+									char_nxt <= buff[2];
+									hold <= 4'h4;
+								end else begin
+									valid <= 1'b1;
+									offset <= 4'h4;
+									match_len <= 3'h4;
+									char_nxt <= buff[3];
+									hold <= 4'h3;
+								end
+							end else begin
+								valid <= 1'b1;
+								offset <= 4'h4;
+								match_len <= 3'h3;
+								char_nxt <= buff[4];
+								hold <= 4'h2;
+							end
+						end else begin
+							valid <= 1'b1;
+							offset <= 4'h4;
+							match_len <= 3'h2;
+							char_nxt <= buff[5];
+							hold <= 4'h1;
+						end
+					end else begin
+						valid <= 1'b1;
+						offset <= 4'h4;
+						match_len <= 3'h1;
+						char_nxt <= buff[6];
+						hold <= 4'h0;
+					end
 				end else if (buff[7] == buff[11]) begin
+					if (buff[6] == buff[10]) begin
+						if (buff[5] == buff[9]) begin
+							if (buff[4] == buff[8]) begin
+								valid <= 1'b1;
+								offset <= 4'h3;
+								match_len <= 3'h4;
+								char_nxt <= buff[3];
+								hold <= 4'h3;
+							end else begin
+								valid <= 1'b1;
+								offset <= 4'h3;
+								match_len <= 3'h3;
+								char_nxt <= buff[4];
+								hold <= 4'h2;
+							end
+						end else begin
+							valid <= 1'b1;
+							offset <= 4'h3;
+							match_len <= 3'h2;
+							char_nxt <= buff[5];
+							hold <= 4'h1;
+						end
+					end else begin
+						valid <= 1'b1;
+						offset <= 4'h3;
+						match_len <= 3'h1;
+						char_nxt <= buff[6];
+						hold <= 4'h0;
+					end
 				end else if (buff[7] == buff[10]) begin
 					if (buff[6] == buff[9]) begin
 						if (buff[5] == buff[8]) begin
@@ -440,7 +758,73 @@ always @(posedge clk) begin
 				end else if (buff[7] == buff[14]) begin
 				end else if (buff[7] == buff[13]) begin
 				end else if (buff[7] == buff[12]) begin
+					if (buff[6] == buff[11]) begin
+						if (buff[5] == buff[10]) begin
+							if (buff[4] == buff[9]) begin
+								if (buff[3] == buff[8]) begin
+									valid <= 1'b1;
+									offset <= 4'h4;
+									match_len <= 3'h5;
+									char_nxt <= buff[2];
+									hold <= 4'h4;
+								end else begin
+									valid <= 1'b1;
+									offset <= 4'h4;
+									match_len <= 3'h4;
+									char_nxt <= buff[3];
+									hold <= 4'h3;
+								end
+							end else begin
+								valid <= 1'b1;
+								offset <= 4'h4;
+								match_len <= 3'h3;
+								char_nxt <= buff[4];
+								hold <= 4'h2;
+							end
+						end else begin
+							valid <= 1'b1;
+							offset <= 4'h4;
+							match_len <= 3'h2;
+							char_nxt <= buff[5];
+							hold <= 4'h1;
+						end
+					end else begin
+						valid <= 1'b1;
+						offset <= 4'h4;
+						match_len <= 3'h1;
+						char_nxt <= buff[6];
+						hold <= 4'h0;
+					end
 				end else if (buff[7] == buff[11]) begin
+					if (buff[6] == buff[10]) begin
+						if (buff[5] == buff[9]) begin
+							if (buff[4] == buff[8]) begin
+								valid <= 1'b1;
+								offset <= 4'h3;
+								match_len <= 3'h4;
+								char_nxt <= buff[3];
+								hold <= 4'h3;
+							end else begin
+								valid <= 1'b1;
+								offset <= 4'h3;
+								match_len <= 3'h3;
+								char_nxt <= buff[4];
+								hold <= 4'h2;
+							end
+						end else begin
+							valid <= 1'b1;
+							offset <= 4'h3;
+							match_len <= 3'h2;
+							char_nxt <= buff[5];
+							hold <= 4'h1;
+						end
+					end else begin
+						valid <= 1'b1;
+						offset <= 4'h3;
+						match_len <= 3'h1;
+						char_nxt <= buff[6];
+						hold <= 4'h0;
+					end
 				end else if (buff[7] == buff[10]) begin
 					if (buff[6] == buff[9]) begin
 						if (buff[5] == buff[8]) begin

@@ -1,91 +1,74 @@
-module TLS(clk, reset, Set, Stop, Jump, Gin, Yin, Rin, Gout, Yout, Rout);
-input           clk;
-input           reset;
-input           Set;
-input           Stop;
-input           Jump;
-input     [3:0] Gin;
-input     [3:0] Yin;
-input     [3:0] Rin;
-output reg      Gout;
-output reg      Yout;
-output reg      Rout;
-
-	reg [3:0] G_time, Y_time, R_time, Time, counter;
-	reg [1:0] state;
-	reg awake;
+module TLS(
+input           clk, reset, Set, Stop, Jump,
+input     [3:0] Gin, Yin, Rin,
+output reg      Gout, Yout, Rout);
 	
-	always @(posedge Set) begin
-		G_time = Gin;
-		Y_time = Yin;
-		R_time = Rin;
+	parameter [1:0] G = 2'b00, Y = 2'b01, R = 2'b10;
+	reg [3:0] G_time, Y_time, R_time, G_counter, Y_counter, R_counter;
+	reg [1:0] state, n_state;
+	
+	always @(*) begin
+		if (Set)
+			n_state = G;
+		else begin
+			case (state)
+				default : n_state = G;
+				G : n_state = Jump ? R : (!G_counter & ~Stop) ? Y : G;
+				Y : n_state = Jump ? R : (!Y_counter & ~Stop) ? R : Y;
+				R : n_state = (!R_counter & ~Stop) ? G : R;
+			endcase
+		end
 	end
 	
-	always @(posedge clk) begin
-		if (Stop) 
-			counter <= counter;
-		else if (Jump)
-			counter <= Time - 1;
-		else if (counter)
-			counter <= counter - 1;
-		else begin
-			counter <= Time - 1;
-			if (Time == 4'h1)
-				awake <= 1'b1;
-			else
-				awake <= 1'b0;
+	always @(posedge Set or posedge reset) begin
+		if (Set) begin
+			G_time <= Gin;
+			Y_time <= Yin;
+			R_time <= Rin;
+		end else begin
+			G_time <= G_time;
+			Y_time <= Y_time;
+			R_time <= R_time;
 		end
 	end
 	
 	always @(posedge clk) begin
-		if (~Stop) begin
+		state <= n_state;
+		if (Set | reset) begin
+			G_counter <= G_time - 4'h1;
+			Y_counter <= Y_time - 4'h1;
+			R_counter <= R_time - 4'h1;
+		end else begin
 			case (state)
-				default: state = 2'b00;
-				2'b00: begin
-					Gout = 1'b1;
-					Yout = 1'b0;
-					Rout = 1'b0;
-				end
-				2'b01: begin
-					Gout = 1'b0;
-					Yout = 1'b1;
-					Rout = 1'b0;
-				end
-				2'b10: begin
-					Gout = 1'b0;
-					Yout = 1'b0;
-					Rout = 1'b1;
-				end
+				G : G_counter <= Stop ? G_counter : (!G_counter | Jump) ? G_time - 4'h1 : G_counter - 4'h1;
+				Y : Y_counter <= Stop ? Y_counter : (!Y_counter | Jump) ? Y_time - 4'h1 : Y_counter - 4'h1;
+				R : R_counter <= Stop ? R_counter : !R_counter ? R_time - 4'h1 : R_counter - 4'h1;
 			endcase
 		end
 	end
 	
 	always @(*) begin
-		if (Set | reset) begin
-			Time = G_time;
-			state = 2'b00;
-		end else if (Jump) begin
-			state = 2'b10;
-			Time = R_time;
-		end else if (!counter | awake) begin
-			case (state)
-				default: state = 2'b00;
-				2'b00: begin
-					state = 2'b01;
-					Time = Y_time;
-				end
-				2'b01: begin
-					state = 2'b10;
-					Time = R_time;
-				end
-				2'b10: begin
-					state = 2'b00;
-					Time = G_time;
-				end
-			endcase
-		end
+		case (state)
+			G : begin
+				Gout = 1'b1;
+				Yout = 1'b0;
+				Rout = 1'b0;
+			end
+			Y : begin
+				Gout = 1'b0;
+				Yout = 1'b1;
+				Rout = 1'b0;
+			end
+			R : begin
+				Gout = 1'b0;
+				Yout = 1'b0;
+				Rout = 1'b1;
+			end
+			default : begin
+				Gout = 1'b0;
+				Yout = 1'b0;
+				Rout = 1'b0;
+			end
+		endcase
 	end
-	
-	
-
 endmodule

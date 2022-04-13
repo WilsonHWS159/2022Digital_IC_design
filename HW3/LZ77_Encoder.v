@@ -12,22 +12,19 @@ output reg [7:0]	char_nxt;
 
 	// 0~7 is look-ahead buffer, 8-16 is search buffer
 	reg [7:0] buff[16:0];
-	reg [3:0] hold;
+	reg [2:0] hold;
 	reg [16:0] buff_BM;
-	reg done;
-	wire [7:0] cmp_result[8:0];
-	wire [3:0] cmp_len[8:0];
-	wire [3:0] max_len;
+	wire [6:0] cmp_result[8:0];
+	wire [2:0] cmp_len[8:0];
+	wire [2:0] max_len;
 
 	always @(posedge reset) begin
-		buff_BM <= 17'h00000;
 		encode <= 1'b1;
 		finish <= 1'b0;
 	end
 	
 	always @(posedge clk) begin
 		if (char_nxt == 8'h24) begin
-			encode <= 1'b0;
 			finish <= 1'b1;
 		end
 	end
@@ -42,18 +39,20 @@ output reg [7:0]	char_nxt;
 				buff[i+1] <= buff[i];
 				buff_BM[i+1] <= buff_BM[i];
 			end
+		end else begin
+			buff_BM <= 17'h00000;
 		end
 	end
 
 	generate
 		genvar j;
 		for (j=0; j<9; j=j+1) begin: CMP
-			cmp Cmp(.buff1({buff[16-j], buff[15-j], buff[14-j], buff[13-j], buff[12-j], buff[11-j], buff[10-j], buff[9-j]}), .buff2({buff[7], buff[6], buff[5], buff[4], buff[3], buff[2], buff[1], buff[0]}), .result(cmp_result[8-j]), .len(cmp_len[8-j]));
+			cmp Cmp(.buff1({buff[16-j], buff[15-j], buff[14-j], buff[13-j], buff[12-j], buff[11-j], buff[10-j]}), .buff2({buff[7], buff[6], buff[5], buff[4], buff[3], buff[2], buff[1]}), .result(cmp_result[8-j]), .len(cmp_len[8-j]));
 		end
 	endgenerate
 	
 	
-	wire [3:0] tmp[6:0];
+	wire [2:0] tmp[6:0];
 	assign tmp[0] = buff_BM[9] ? ((cmp_len[0] > cmp_len[1]) ? cmp_len[0] : cmp_len[1]) : buff_BM[8] ? cmp_len[0] : 4'h0;
 	assign tmp[1] = buff_BM[11] ? ((cmp_len[2] > cmp_len[3]) ? cmp_len[2] : cmp_len[3]) : buff_BM[10] ? cmp_len[2] : 4'h0;
 	assign tmp[2] = buff_BM[13] ? ((cmp_len[4] > cmp_len[5]) ? cmp_len[4] : cmp_len[5]) : buff_BM[12] ? cmp_len[4] : 4'h0;
@@ -97,17 +96,14 @@ output reg [7:0]	char_nxt;
 		if (buff_BM[7]) begin
 			if (!hold) begin
 				valid <= 1'b1;
-				encode <= 1'b0;
 				hold <= max_len;
 			end else begin
 				valid <= 1'b0;
-				encode <= 1'b1;
-				hold <= hold - 4'h0;
+				hold <= hold - 4'h1;
 			end
 		end else begin
 			hold <= 4'h0;
 			valid <= 1'b0;
-			encode <= 1'b1;
 		end
 	end
 

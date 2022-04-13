@@ -100,27 +100,27 @@ output reg [7:0]	char_nxt;
 	assign tmp[6] = (tmp[4] > tmp[5]) ? tmp[4] : tmp[5];
 	assign max_len = buff_BM[16] ? ((tmp[6] > cmp_len[8]) ? tmp[6] : cmp_len[8]) : tmp[6];
 	
-	always @(negedge clk) begin
+	always @(posedge clk) begin
 		if (buff_BM[8]) begin
 			match_len <= max_len;
 			char_nxt <= buff[7-max_len];
 			if (!max_len)
 				offset <= 4'h0;
-			else if (cmp_len[8] == max_len)
+			else if ((cmp_len[8] == max_len) & buff_BM[16])
 				offset <= 4'h8;
-			else if (cmp_len[7] == max_len)
+			else if ((cmp_len[7] == max_len) & buff_BM[15])
 				offset <= 4'h7;
-			else if (cmp_len[6] == max_len)
+			else if ((cmp_len[6] == max_len) & buff_BM[14])
 				offset <= 4'h6;
-			else if (cmp_len[5] == max_len)
+			else if ((cmp_len[5] == max_len) & buff_BM[13])
 				offset <= 4'h5;
-			else if (cmp_len[4] == max_len)
+			else if ((cmp_len[4] == max_len) & buff_BM[12])
 				offset <= 4'h4;
-			else if (cmp_len[3] == max_len)
+			else if ((cmp_len[3] == max_len) & buff_BM[11])
 				offset <= 4'h3;
-			else if (cmp_len[2] == max_len)
+			else if ((cmp_len[2] == max_len) & buff_BM[10])
 				offset <= 4'h2;
-			else if (cmp_len[1] == max_len)
+			else if ((cmp_len[1] == max_len) & buff_BM[9])
 				offset <= 4'h1;
 			else
 				offset <= 4'h0;
@@ -131,7 +131,7 @@ output reg [7:0]	char_nxt;
 		end
 	end
 	
-	always @(negedge clk) begin
+	always @(posedge clk) begin
 		if (buff_BM[7] & (state != done)) begin
 			if (!hold) begin
 				valid <= 1'b1;

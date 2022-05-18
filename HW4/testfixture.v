@@ -1,5 +1,5 @@
 `timescale 1ns/10ps
-`define	CYCLE      25.0				// Modify your clock period here
+`define	CYCLE      30.0				// Modify your clock period here
 `define	End_CYCLE  10000000			// Modify cycle times once your design need more cycle times!
 `define	tb
 
@@ -131,7 +131,7 @@ module TB_ELA;
     	wait(done);
 		for (i = 0; i < 31; i = i + 1) begin
 			for(j = 0; j < 32; j = j + 1) begin
-				if(result_image_mem[i*32+j] === exp_mem[i*32+j]) begin
+				if( result_image_mem[i*32+j] == exp_mem[i*32+j] ) begin
 					err_odd = err_odd;
 				end
 				else begin

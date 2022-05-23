@@ -44,10 +44,8 @@ module ELA(clk, rst, in_data, data_rd, req, wen, addr, data_wr, done);
 			wen <= 1'b0;
 			done <= 1'b0;
 			row_id <= 4'hF;
-			i_row_id <= 4'hF;
 			col_id <= 5'h00;
 			r_done <= 1'b0;
-			hold <= 1'b0;
 			addr <= 10'h000;
 			flag1 <= 1'b0;
 		end else begin
@@ -90,9 +88,7 @@ module ELA(clk, rst, in_data, data_rd, req, wen, addr, data_wr, done);
 						end
 					end else begin
 						row_id <= 4'h0;
-						i_row_id <= 4'h0;
 						col_id <= 5'h00;
-						hold <= 1'b1;
 						sel <= 1'b1;
 						wen <= 1'b1;
 					end
@@ -123,15 +119,26 @@ module ELA(clk, rst, in_data, data_rd, req, wen, addr, data_wr, done);
 		end
 	end
 	
-	always @(posedge clk) begin
-		if ((state == executing) & (image_bm[4'h0]) & (image_bm[4'h1])) begin
-			if ((col_id == 5'h00) & ~hold) begin
-				hold <= 1'b1;
-				i_row_id <= i_row_id + 4'h1;
-			end else begin
-				hold <= 1'b0;
-				i_image[col_id][i_row_id] <= result;
-			end
+	always @(posedge clk or posedge rst) begin
+		if (rst) begin
+			i_row_id <= 4'hF;
+			hold <= 1'b0;
+		end else begin
+			case(state)
+				executing : begin
+					if ((image_bm[4'h0]) & (image_bm[4'h1])) begin
+						if ((col_id == 5'h00) & ~hold) begin
+							hold <= 1'b1;
+							i_row_id <= i_row_id + 4'h1;
+						end else begin
+							hold <= 1'b0;
+							i_image[col_id][i_row_id] <= result;
+						end
+					end
+				end
+				output_image : hold <= hold ? hold : 1'b1;
+			endcase
+			
 		end
 	end
 	

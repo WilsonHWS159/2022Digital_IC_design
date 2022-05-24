@@ -34,8 +34,6 @@ module ELA(clk, rst, in_data, data_rd, req, wen, addr, data_wr, done);
 		end
 	end
 
-	assign data_wr = (sel) ? image[col_id][row_id] : i_image[col_id][row_id];
-
 	always @(posedge clk or posedge rst) begin
 		state <= n_state;
 		if (rst) begin
@@ -52,11 +50,8 @@ module ELA(clk, rst, in_data, data_rd, req, wen, addr, data_wr, done);
 			case (state)
 				executing : begin
 					if (r_done) begin
-						if (flag1) begin
-							col_id <= col_id + 5'h01;
-						end else begin
-							flag1 <= 1'b1;
-						end
+						col_id <= flag1 ? col_id + 5'h01 : col_id;
+						flag1 <= 1'b1;
 					end else if ((col_id == 5'h00) & ~req) begin
 						row_id <= row_id + 4'h1;
 						req <= 1'b1;
@@ -82,9 +77,7 @@ module ELA(clk, rst, in_data, data_rd, req, wen, addr, data_wr, done);
 						col_id <= col_id + 5'h01;
 						if (col_id == 5'h1F) begin
 							sel <= sel ^ 1'b1;
-							if (~sel) begin
-								row_id <= row_id + 4'h1;
-							end
+							row_id <= sel ? row_id : row_id + 4'h1;
 						end
 					end else begin
 						row_id <= 4'h0;
@@ -101,23 +94,17 @@ module ELA(clk, rst, in_data, data_rd, req, wen, addr, data_wr, done);
 		end
 	end
 	
-	reg [7:0] a, b, c, d , e, f;
-	wire [7:0] result;
-	reg boundary;
+	wire [7:0] a, b, c, d , e, f, result;
+	wire boundary;
 	interpolate itp(.boundary(boundary), .a(a), .b(b), .c(c), .d(d), .e(e), .f(f), .result(result));
-	always @(*) begin
-		a = image[col_id - 5'h01][i_row_id];
-		b = image[col_id][i_row_id];
-		c = image[col_id + 5'h01][i_row_id];
-		d = image[col_id - 5'h01][i_row_id + 4'h1];
-		e = image[col_id][i_row_id + 4'h1];
-		f = image[col_id + 5'h01][i_row_id + 4'h1];
-		if ((col_id == 5'h00) | (col_id == 5'h1F)) begin
-			boundary = 1'b1;
-		end else begin
-			boundary = 1'b0;
-		end
-	end
+	assign a = image[col_id - 5'h01][i_row_id];
+	assign b = image[col_id][i_row_id];
+	assign c = image[col_id + 5'h01][i_row_id];
+	assign d = image[col_id - 5'h01][i_row_id + 4'h1];
+	assign e = image[col_id][i_row_id + 4'h1];
+	assign f = image[col_id + 5'h01][i_row_id + 4'h1];
+	assign boundary = ((col_id == 5'h00) | (col_id == 5'h1F)) ? 1'b1 : 1'b0;
+	assign data_wr = (sel) ? image[col_id][row_id] : i_image[col_id][row_id];
 	
 	always @(posedge clk or posedge rst) begin
 		if (rst) begin

@@ -10,13 +10,13 @@ output reg [10:0] result;
 	reg [2:0] cnt, s_cnt;
 	reg [7:0] min;
 	reg [10:0] sum;
-	parameter [1:0] receive = 2'b00, o_min = 2'b01, o_sum = 2'b11, o_sort = 2'b10;
+	parameter [1:0] receive = 2'b00, o_sum = 2'b01, o_min = 2'b11, o_sort = 2'b10;
 
 	always @(*) begin
 		case (state)
-			receive : n_state = (cnt == s_cnt) ? o_min : receive;
-			o_min : n_state = o_sum;
-			o_sum : n_state = o_sort;
+			receive : n_state = (cnt == s_cnt) ? o_sum : receive;
+			o_sum : n_state = o_min;
+			o_min : n_state = o_sort;
 			o_sort : n_state = (cnt == s_cnt) ? receive : o_sort;
 		endcase
 	end

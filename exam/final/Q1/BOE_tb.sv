@@ -117,10 +117,10 @@ always @(posedge clk ) begin
 			get_result_out = result_out;
 			
 			if((get_result_out !== golden_out)) begin
-			    if(count_out == 1) begin
+			    if(count_out == 2) begin
 				    max_fail_reg = max_fail_reg + 1;
 			    end
-				else if(count_out == 2) begin
+				else if(count_out == 1) begin
 				    sum_fail_reg = sum_fail_reg + 1;
 				end
 				else begin
@@ -128,10 +128,10 @@ always @(posedge clk ) begin
 				end
 			end
 			else begin
-			    if(count_out == 1) begin
+			    if(count_out == 2) begin
 				    max_pass_reg = max_pass_reg + 1;
 			    end
-				else if(count_out == 2) begin
+				else if(count_out == 1) begin
 				    sum_pass_reg = sum_pass_reg + 1;
 				end
 				else begin
@@ -149,13 +149,13 @@ always @(posedge clk ) begin
 					$display("Series %0d: PASS\n",group_num);
 				end
 				else begin
-					if(max_fail_reg != 0) begin
+					if(sum_fail_reg != 0) begin
 					    stage_1_fail = stage_1_fail + 1;
 					end
 					else begin
 					    stage_1_pass = stage_1_pass + 1;
                     end					
-					if(sum_fail_reg != 0) begin
+					if(max_fail_reg != 0) begin
 					    stage_2_fail = stage_2_fail + 1;
 					end
 					else begin

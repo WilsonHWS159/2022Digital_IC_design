@@ -12,7 +12,7 @@ module ELA(clk, rst, ready, in_data, data_rd, req, wen, addr, data_wr, done);
 	output reg	[12:0]	addr;
 	output reg	[7:0]	data_wr;
 	output reg			done;
-
+	
 	parameter	[2:0]	init = 3'h0, r_first = 3'h1, r_second = 3'h2, bound = 3'h3, not_bound = 3'h4, write_out = 3'h5, r_next = 3'h6, finish = 3'h7;
 	reg	[2:0]	state, n_state;
 	reg	[7:0]	d1, d2, d3;
@@ -35,7 +35,7 @@ module ELA(clk, rst, ready, in_data, data_rd, req, wen, addr, data_wr, done);
 	end
 	
 	always @(posedge clk) begin
-		state <= (rst) ? init : n_state;
+		state <= (rst) ? init : (ready) ? n_state : state;
 	end
 	
 	always @(posedge clk) begin
